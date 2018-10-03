@@ -36,14 +36,14 @@ public class main {
 	    //algoritmo de kosaraju para detectar componentes fortementes conexos.
 	   
 	    
-	    System.out.println("questão 1:");
+	    System.out.println("questão 1:\n");
 	    System.out.println("É possível trafegar em ambos os sentidos de um cruzamento para qualquer outro? " + k.isStronglyConnected());
-	    System.out.println("Os seguintes componentes não são acessiveis entre si:");
+	    System.out.println("\nOs seguintes componentes não são acessiveis entre si:");
 	    for(Set<DefaultVertex> aux : k.stronglyConnectedSets()) {
 	    	System.out.println(aux);
 	    }
 	    
-	    System.out.println("\nquestão 2:");
+	    System.out.println("\nquestão 2:\n");
 	    
 	    
 	    AllDirectedPaths <DefaultVertex,RelationshipDirectedEdge> p = new AllDirectedPaths <> (graphgml);
@@ -53,7 +53,7 @@ public class main {
 	    		if(p.getAllPaths(b, a, true, 10000).size() > 0 && !a.equals(b))
 	    			aux = false;
 	    	}
-	    	if(aux) System.out.println(a);
+	    	if(aux) System.out.println("o seguinte vertice é inacessível: " + a);
 	    }
 	    
 	    
