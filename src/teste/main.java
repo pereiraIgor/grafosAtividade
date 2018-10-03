@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
+import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.*;
 import org.jgrapht.io.*;
 
@@ -19,7 +21,7 @@ public class main {
 		GmlImporter <DefaultVertex,RelationshipDirectedEdge> gmlImporter = new GmlImporter <> (vp1,ep1);
 	    DefaultDirectedGraph<DefaultVertex,RelationshipDirectedEdge> graphgml = new DefaultDirectedGraph<>(RelationshipDirectedEdge.class);
    	    try {
-   	    	gmlImporter.importGraph(graphgml, ImportGraph.readFile("/home/matheuslos/Downloads/grid.gml"));
+   	    	gmlImporter.importGraph(graphgml, ImportGraph.readFile("grid/grid.gml"));
 	      } catch (ImportException e) {
 	        throw new RuntimeException(e);
 	      }	    		
@@ -30,12 +32,31 @@ public class main {
 
 	    KosarajuStrongConnectivityInspector <DefaultVertex,RelationshipDirectedEdge> k = 
 	    		new KosarajuStrongConnectivityInspector <> (graphgml);
+	    
 	    //algoritmo de kosaraju para detectar componentes fortementes conexos.
+	   
+	    
+	    System.out.println("questão 1:");
 	    System.out.println("É possível trafegar em ambos os sentidos de um cruzamento para qualquer outro? " + k.isStronglyConnected());
 	    System.out.println("Os seguintes componentes não são acessiveis entre si:");
-	    for(Graph<DefaultVertex, RelationshipDirectedEdge> aux : k.getStronglyConnectedComponents()) {
-	    	System.out.println(aux.vertexSet());
+	    for(Set<DefaultVertex> aux : k.stronglyConnectedSets()) {
+	    	System.out.println(aux);
 	    }
+	    
+	    System.out.println("\nquestão 2:");
+	    
+	    
+	    AllDirectedPaths <DefaultVertex,RelationshipDirectedEdge> p = new AllDirectedPaths <> (graphgml);
+	    for(teste.DefaultVertex a: graphgml.vertexSet()) {
+	    	boolean aux = true;
+	    	for(teste.DefaultVertex b: graphgml.vertexSet()) {
+	    		if(p.getAllPaths(b, a, true, 10000).size() > 0 && !a.equals(b))
+	    			aux = false;
+	    	}
+	    	if(aux) System.out.println(a);
+	    }
+	    
+	    
 	    
 	}
 }
