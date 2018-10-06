@@ -1,9 +1,11 @@
 package teste;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
@@ -12,7 +14,7 @@ import org.jgrapht.io.*;
 
 
 
-public class main {
+public class mudancas {
 	public static void main(String[] args) {
 	    VertexProvider <DefaultVertex> vp1 = 
 	    		(label,attributes) -> new DefaultVertex (label,attributes);
@@ -58,22 +60,27 @@ public class main {
 	    
 	    System.out.println("\nquestão 3:\n");
 	    
-	    int maior;
-	    int menor;
+	    Integer maior;
+	    Integer menor;
 	    
 	    for(teste.DefaultVertex a: graphgml.vertexSet()) {
-	    	maior = -1;
-	    	menor = 1000000000;
 	    	
 	    	for(teste.DefaultVertex b: graphgml.vertexSet()) {
-	    		if(p.getAllPaths(a, b, true, 10000).size() > maior && !a.equals(b))
-	    			maior = p.getAllPaths(a, b, true, 10000).size();
+	    		List<GraphPath<DefaultVertex, RelationshipDirectedEdge>> grafo = p.getAllPaths(a, b, true, 1000000);
+	    		if(grafo.size() > 0 && !a.equals(b)) {
 	    			
-	    		if(p.getAllPaths(a, b, true, 10000).size() < menor && !a.equals(b))
-	    			menor = p.getAllPaths(a, b, true, 10000).size();
+	    			maior = grafo.get(0).getEdgeList().size();
+			    	menor =  grafo.get(0).getEdgeList().size();
+	    			for(GraphPath<DefaultVertex, RelationshipDirectedEdge> c : grafo) {
+	    				if(c.getEdgeList().size() > maior) maior = c.getEdgeList().size();
+	    				if(c.getEdgeList().size() < menor) menor = c.getEdgeList().size();
+	    				
+	    			}
+	    			
+	    			System.out.println("os tamanhos dos caminhos entre " + a + " e " + b + " são -> maior: " + maior + " menor: " + menor + " media: " + (maior + menor)/2);
+	    		}
 	    	}
-	    	
-	    	System.out.println("maior : " + maior + " menor: " + menor);
+
 	    }
 	    
 	    
